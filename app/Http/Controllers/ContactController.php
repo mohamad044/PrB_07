@@ -34,3 +34,4 @@ class ContactController extends Controller
         return redirect()->route('contact')->with('success', 'Message sent successfully.');
     }
 }
+

@@ -20,7 +20,7 @@
                         <a class="nav-link" href="{{ url('/') }}">الرئيسية</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/customers') }}">العملاء</a>
+                        <a class="nav-link" href="{{ url('/clients') }}">العملاء</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="{{ url('/services') }}">الخدمات</a>
@@ -41,9 +41,36 @@
                 <li class="list-group-item">
                     <h5>{{ $service->name }}</h5>
                     <p>{{ $service->description }}</p>
+                    <!-- Add Form for Deletion and Edit here -->
+                    <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                    </form>
                 </li>
             @endforeach
         </ul>
+
+        <!-- Add New Service Form -->
+        <div class="mt-4">
+            <h3>إضافة خدمة جديدة</h3>
+            <form action="{{ route('services.store') }}" method="POST">
+                @csrf
+                <div class="mb-3">
+                    <label for="name" class="form-label">اسم الخدمة</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">وصف الخدمة</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">رابط الصورة</label>
+                    <input type="url" class="form-control" id="image" name="image" required>
+                </div>
+                <button type="submit" class="btn btn-primary">إضافة خدمة</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

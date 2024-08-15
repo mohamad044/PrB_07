@@ -15,9 +15,9 @@ class CreateServicesTable extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name'); // Changed from 'title' to 'name' to match the controller and model
             $table->text('description');
-            $table->string('image')->nullable();
+            $table->string('image')->nullable(); // This allows the image field to be optional
             $table->timestamps();
         });
     }

@@ -7,70 +7,56 @@ use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    // عرض قائمة الخدمات (للعامة)
+    // Display list of services to the public
     public function index()
     {
         $services = Service::all();
-        return view('services.index', compact('services'));
+        return view('services', compact('services'));
     }
 
-    // عرض نموذج إضافة خدمة (للمديرين)
-    public function create()
-    {
-        return view('admin.services.create');
-    }
-
-    // تخزين خدمة جديدة (للمديرين)
+    // Store a new service
     public function store(Request $request)
     {
-        // تحقق من صحة البيانات
         $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|url', // Assuming the image is a URL; adjust validation as needed
+            'name' => 'required|string|max:255',
+            'image' => 'required|url',
             'description' => 'required|string',
         ]);
 
-        $service = new Service;
-        $service->title = $request->title;
-        $service->image = $request->image;
-        $service->description = $request->description;
-        $service->save();
+        Service::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
+        return redirect()->route('services.index')->with('success', 'Service created successfully.');
     }
 
-    // عرض نموذج تعديل خدمة (للمديرين)
-    public function edit($id)
-    {
-        $service = Service::findOrFail($id);
-        return view('admin.services.edit', compact('service'));
-    }
-
-    // تحديث بيانات خدمة (للمديرين)
+    // Update an existing service
     public function update(Request $request, $id)
     {
-        // تحقق من صحة البيانات
         $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|url', // Assuming the image is a URL; adjust validation as needed
+            'name' => 'required|string|max:255',
+            'image' => 'required|url',
             'description' => 'required|string',
         ]);
 
         $service = Service::findOrFail($id);
-        $service->title = $request->title;
-        $service->image = $request->image;
-        $service->description = $request->description;
-        $service->save();
+        $service->update([
+            'name' => $request->name,
+            'image' => $request->image,
+            'description' => $request->description,
+        ]);
 
-        return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
+        return redirect()->route('services.index')->with('success', 'Service updated successfully.');
     }
 
-    // حذف خدمة (للمديرين)
+    // Delete a service
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
         $service->delete();
 
-        return redirect()->route('admin.services.index')->with('success', 'Service deleted successfully.');
+        return redirect()->route('services.index')->with('success', 'Service deleted successfully.');
     }
 }
